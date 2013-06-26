@@ -22,7 +22,8 @@
 			fluid: f,     // is it a percentage width? (boolean)
 			complete: f,  // invoke after animation (function with argument)
 			items: '>ul', // slides container selector
-			item: '>li'   // slidable items selector
+			item: '>li',   // slidable items selector
+			item_width: '210' // slidable element width 
 		};
 
 		_.init = function(el, o) {
@@ -56,8 +57,9 @@
 			el.css({width: _.max[0], height: li.first().outerHeight(), overflow: 'hidden'});
 
 			//  Set the relative widths
-			ul.css({position: 'relative', left: 0, width: (len * 100) + '%'});
-			li.css({'float': 'left', width: (100 / len) + '%'});
+			ul.css({position: 'relative', left: 0, width: (len * o.item_width)+'px' });
+			li.css({'float': 'left', width: o.item_width+'px'});
+			console.log(o.item_width)
 
 			//  Autoslide
 			setTimeout(function() {
@@ -143,7 +145,7 @@
 				//  Handle those pesky dots
 				el.find('.dot').eq(index).addClass('active').siblings().removeClass('active');
 
-				el.animate(obj, speed) && ul.animate($.extend({left: '-' + index + '00%'}, obj), speed, function(data) {
+				el.animate(obj, speed) && ul.animate($.extend({left: '-' + index * o.item_width}, obj), speed, function(data) {
 					_.i = index;
 
 					$.isFunction(o.complete) && !callback && o.complete(el);
